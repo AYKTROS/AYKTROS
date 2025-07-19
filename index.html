@@ -500,14 +500,17 @@
     </div>
 
     <script>
-        // Товары - ЗАМЕНИТЕ НА ПРАВИЛЬНУЮ ССЫЛКУ IMGUR
+        // РЕЖИМ РЕДАКТИРОВАНИЯ: 1 = можно загружать фото, 0 = только просмотр
+        const EDIT_MODE = 1;
+        
+        // Товары
         const products = [
             {
                 id: 1,
                 name: "Premium Clothing Item",
                 price: "30 €",
                 description: "Высококачественная одежда из премиальных материалов. Современный дизайн и безупречное качество исполнения.",
-                imageUrl: "https://imgur.com/a/361Frj7.jpg" // ЗАМЕНИТЕ НА ПРАВИЛЬНУЮ ССЫЛКУ!
+                imageUrl: "" // Изображение будет загружено
             }
         ];
 
@@ -522,9 +525,12 @@
         function renderProducts() {
             const grid = document.getElementById('productsGrid');
             grid.innerHTML = products.map((product, index) => `
-                <div class="product-card" style="animation-delay: ${index * 0.1}s" onclick="openProductModal(${product.id})">
+                <div class="product-card" style="animation-delay: ${index * 0.1}s" onclick="${EDIT_MODE ? `uploadImage(${product.id})` : `openProductModal(${product.id})`}">
                     <div class="product-image" id="product-image-${product.id}">
-                        ${product.imageUrl ? `<img src="${product.imageUrl}" alt="${product.name}" style="width: 100%; height: 100%; object-fit: cover;" onload="this.parentElement.classList.add('loaded')" onerror="showImageError(${product.id})">` : 'Изображение недоступно'}
+                        ${product.imageUrl ? 
+                            `<img src="${product.imageUrl}" alt="${product.name}" style="width: 100%; height: 100%; object-fit: cover;" onload="this.parentElement.classList.add('loaded')">` : 
+                            `<div style="color: rgba(255,255,255,0.5); font-size: 16px; display: flex; align-items: center; justify-content: center; height: 100%;">${EDIT_MODE ? 'Кликните для загрузки фото' : 'Нет изображения'}</div>`
+                        }
                     </div>
                     <div class="product-info">
                         <div class="product-price">${product.price}</div>
@@ -532,6 +538,74 @@
                 </div>
             `).join('');
         }
+
+        // Загрузка изображения
+        function uploadImage(productId) {
+            if (!EDIT_MODE) return;
+            
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*';
+            
+            input.onchange = function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const imageUrl = e.target.result;
+                        
+                        // Обновляем товар
+                        const productIndex = products.findIndex(p => p.id === productId);
+                        if (productIndex !== -1) {
+                            products[productIndex].imageUrl = imageUrl;
+                            renderProducts();
+                            
+                            // Показываем уведомление
+                            showNotification('Изображение загружено! Не забудьте поставить EDIT_MODE = 0 для блокировки редактирования.');
+                        }
+                    };
+                    reader.readAsDataURL(file);
+                }
+            };
+            
+            input.click();
+        }
+
+        // Показать уведомление
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 100px;
+                right: 20px;
+                background: #333;
+                color: white;
+                padding: 15px 20px;
+                border-radius: 5px;
+                border: 1px solid rgba(255,255,255,0.2);
+                z-index: 10001;
+                max-width: 300px;
+                font-size: 14px;
+                animation: slideIn 0.3s ease;
+            `;
+            
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 5000);
+        }
+
+        // Добавляем стиль для анимации уведомления
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+        `;
+        document.head.appendChild(style);
 
         // Показать ошибку загрузки изображения
         function showImageError(productId) {
@@ -562,6 +636,11 @@
 
         // Открытие модального окна товара
         function openProductModal(productId) {
+            if (EDIT_MODE) {
+                uploadImage(productId);
+                return;
+            }
+            
             const product = products.find(p => p.id === productId);
             if (!product) return;
 
@@ -575,13 +654,11 @@
             if (product.imageUrl) {
                 modalImage.src = product.imageUrl;
                 modalImage.style.display = 'block';
-                modalImage.onerror = function() {
-                    this.style.display = 'none';
-                    modalImageContainer.innerHTML = '<div style="color: rgba(255,255,255,0.5)">Изображение недоступно</div>';
-                };
+                modalImageContainer.style.backgroundColor = '';
             } else {
                 modalImage.style.display = 'none';
                 modalImageContainer.innerHTML = '<div style="color: rgba(255,255,255,0.5)">Изображение недоступно</div>';
+                modalImageContainer.style.backgroundColor = '#333';
             }
 
             modal.style.display = 'block';
