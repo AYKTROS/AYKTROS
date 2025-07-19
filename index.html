@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AYKTROS - Одежда, которая приносит удовольствие</title>
+    <title>AYKTROS - Clothes that bring pleasure</title>
     <style>
         * {
             margin: 0;
@@ -216,16 +216,15 @@
 
         .product-image {
             width: 100%;
-            height: 300px;
-            object-fit: cover;
-            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            height: 400px;
+            position: relative;
+            overflow: hidden;
             background-color: #333;
             display: flex;
             align-items: center;
             justify-content: center;
             color: rgba(255, 255, 255, 0.5);
             font-size: 14px;
-            position: relative;
         }
 
         .product-image img {
@@ -235,14 +234,15 @@
             position: absolute;
             top: 0;
             left: 0;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .product-card:hover .product-image img {
+            transform: scale(1.05);
         }
 
         .product-image.loaded {
             color: transparent;
-        }
-
-        .product-card:hover .product-image {
-            transform: scale(1.05);
         }
 
         .product-info {
@@ -307,19 +307,19 @@
         }
 
         .modal-image-container {
-            flex: 0 0 400px;
+            flex: 0 0 500px;
             background-color: #333;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 40px;
+            padding: 0;
             position: relative;
+            overflow: hidden;
         }
 
         .modal-image {
             width: 100%;
-            max-width: 320px;
-            height: auto;
+            height: 100%;
             object-fit: cover;
             background-color: #333;
         }
@@ -332,7 +332,11 @@
         }
 
         .modal-title {
-            display: none;
+            font-size: 32px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
         }
 
         .modal-price {
@@ -463,6 +467,10 @@
                 width: 280px;
             }
 
+            .product-image {
+                height: 300px;
+            }
+
             .modal-content {
                 width: 95%;
                 margin: 10% auto;
@@ -475,7 +483,7 @@
             .modal-image-container {
                 flex: none;
                 height: 300px;
-                padding: 20px;
+                padding: 0;
                 justify-content: center;
             }
 
@@ -486,12 +494,16 @@
             .modal-description {
                 font-size: 16px;
             }
+
+            .modal-title {
+                font-size: 24px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="update-notice">
-        ⚠️ Обновите ссылку на изображение: замените "https://imgur.com/a/361Frj7" на прямую ссылку (например: "https://i.imgur.com/XXXXXX.jpg")
+        ⚠️ Update image link: replace "https://imgur.com/a/361Frj7" with direct link (e.g.: "https://i.imgur.com/XXXXXX.jpg")
     </div>
 
     <header class="header">
@@ -511,9 +523,9 @@
 
         <section class="products-section" id="products">
             <div class="container">
-                <h2 class="section-title">Одежда</h2>
+                <h2 class="section-title">Cloth</h2>
                 <div class="products-grid" id="productsGrid">
-                    <!-- Товары добавляются здесь -->
+                    <!-- Products added here -->
                 </div>
             </div>
         </section>
@@ -528,37 +540,37 @@
                     <img id="modalImage" class="modal-image" src="" alt="">
                 </div>
                 <div class="modal-info">
-                    <h2 id="modalTitle" class="modal-title"></h2>
+                    <h2 id="modalTitle" class="modal-title">Chrome Hearts Hoodie</h2>
                     <div id="modalPrice" class="modal-price"></div>
                     <p id="modalDescription" class="modal-description"></p>
-                    <button class="buy-button" onclick="buyProduct()">Купить</button>
+                    <button class="buy-button" onclick="buyProduct()">Buy</button>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // ВАЖНО: Замените эту ссылку на прямую ссылку на изображение
-        // Текущая ссылка ведет на альбом, а не на изображение
+        // IMPORTANT: Replace this link with direct image link
+        // Current link leads to album, not image
         const products = [
             {
                 id: 1,
-                name: "Premium Clothing Item",
+                name: "Chrome Hearts Hoodie",
                 price: "30 €",
-                description: "Высококачественная одежда из премиальных материалов. Современный дизайн и безупречное качество исполнения.",
-                // ЗАМЕНИТЕ НА ПРЯМУЮ ССЫЛКУ ТИПА: "https://i.imgur.com/XXXXXX.jpg"
-                imageUrl: "https://i.imgur.com/8x4zAkS.jpeg" // Временная замена
+                description: "Experience the underground luxury of Chrome Hearts with this exclusive hoodie. Crafted from premium heavyweight cotton with a distressed finish that tells its own story. The iconic gothic cross embroidery and sterling silver hardware details create an unmistakable streetwear statement. Each piece carries the rebellious spirit of Los Angeles, where rock'n'roll meets high fashion. This isn't just clothing – it's wearable art for those who dare to stand out from the crowd.",
+                // REPLACE WITH DIRECT LINK LIKE: "https://i.imgur.com/XXXXXX.jpg"
+                imageUrl: "https://i.imgur.com/8x4zAkS.jpeg" // Temporary replacement
             }
         ];
 
-        // Инициализация при загрузке страницы
+        // Initialize on page load
         document.addEventListener('DOMContentLoaded', function() {
             renderProducts();
             initializeModal();
             initializeScrollAnimations();
         });
 
-        // Отображение товаров
+        // Display products
         function renderProducts() {
             const grid = document.getElementById('productsGrid');
             grid.innerHTML = products.map((product, index) => `
@@ -566,7 +578,7 @@
                     <div class="product-image" id="product-image-${product.id}">
                         ${product.imageUrl ? 
                             `<img src="${product.imageUrl}" alt="${product.name}" onload="imageLoaded(${product.id})" onerror="showImageError(${product.id})">` : 
-                            'Изображение недоступно'
+                            'Image unavailable'
                         }
                     </div>
                     <div class="product-info">
@@ -576,19 +588,19 @@
             `).join('');
         }
 
-        // Успешная загрузка изображения
+        // Image loaded successfully
         function imageLoaded(productId) {
             const imageElement = document.getElementById(`product-image-${productId}`);
             imageElement.classList.add('loaded');
         }
 
-        // Показать ошибку загрузки изображения
+        // Show image loading error
         function showImageError(productId) {
             const imageElement = document.getElementById(`product-image-${productId}`);
-            imageElement.innerHTML = '<div class="image-error">❌ Изображение не загрузилось<br><small>Проверьте ссылку на изображение</small></div>';
+            imageElement.innerHTML = '<div class="image-error">❌ Image failed to load<br><small>Check image link</small></div>';
         }
 
-        // Инициализация модального окна
+        // Initialize modal
         function initializeModal() {
             const modal = document.getElementById('productModal');
             const closeBtn = document.querySelector('.close');
@@ -608,7 +620,7 @@
             });
         }
 
-        // Открытие модального окна товара
+        // Open product modal
         function openProductModal(productId) {
             const product = products.find(p => p.id === productId);
             if (!product) return;
@@ -625,32 +637,32 @@
                 modalImage.style.display = 'block';
                 modalImage.onerror = function() {
                     this.style.display = 'none';
-                    modalImageContainer.innerHTML = '<div class="image-error">❌ Изображение не загрузилось<br><small>Проверьте ссылку на изображение</small></div>';
+                    modalImageContainer.innerHTML = '<div class="image-error">❌ Image failed to load<br><small>Check image link</small></div>';
                 };
             } else {
                 modalImage.style.display = 'none';
-                modalImageContainer.innerHTML = '<div class="image-error">Изображение недоступно</div>';
+                modalImageContainer.innerHTML = '<div class="image-error">Image unavailable</div>';
             }
 
             modal.style.display = 'block';
             document.body.style.overflow = 'hidden';
         }
 
-        // Закрытие модального окна
+        // Close modal
         function closeModal() {
             const modal = document.getElementById('productModal');
             modal.style.display = 'none';
             document.body.style.overflow = 'auto';
         }
 
-        // Покупка товара
+        // Buy product
         function buyProduct() {
             window.open('https://t.me/omalonesq324', '_blank');
         }
 
-        // Инициализация анимаций при скролле
+        // Initialize scroll animations
         function initializeScrollAnimations() {
-            // Плавная прокрутка
+            // Smooth scrolling
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function (e) {
                     e.preventDefault();
@@ -664,7 +676,7 @@
                 });
             });
 
-            // Эффекты при скролле
+            // Scroll effects
             window.addEventListener('scroll', () => {
                 const scrolled = window.pageYOffset;
                 const header = document.querySelector('.header');
