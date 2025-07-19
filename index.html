@@ -1,105 +1,891 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <title>Blessed Mortal</title>
-  <style>
-    body {
-      font-family: 'Helvetica Neue', sans-serif;
-      background-color: #fff;
-      color: #111;
-      margin: 0;
-      padding: 0 20px;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AYKTROS - Современный интернет-магазин</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    header {
-      text-align: center;
-      padding: 40px 0;
-      font-size: 32px;
-      letter-spacing: 2px;
-      font-weight: bold;
-    }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
+            background: #0a0a0a;
+            color: #ffffff;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
 
-    .product-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 30px;
-      max-width: 1000px;
-      margin: 0 auto 60px;
-    }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
 
-    .product {
-      cursor: pointer;
-      border: 1px solid #eee;
-      padding: 15px;
-      transition: all 0.2s ease;
-    }
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
 
-    .product:hover {
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
 
-    .product img {
-      width: 100%;
-      height: auto;
-    }
+        .logo {
+            font-size: 28px;
+            font-weight: 900;
+            letter-spacing: -2px;
+            color: #ffffff;
+            position: relative;
+        }
 
-    .description {
-      display: none;
-      margin-top: 15px;
-      font-size: 14px;
-      line-height: 1.5;
-    }
+        .logo::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, #ffffff, transparent);
+            animation: pulse 2s ease-in-out infinite;
+        }
 
-    .buy-btn {
-      display: inline-block;
-      margin-top: 10px;
-      padding: 10px 20px;
-      background: #000;
-      color: #fff;
-      text-decoration: none;
-      font-size: 14px;
-      border-radius: 4px;
-    }
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            list-style: none;
+        }
 
-    footer {
-      text-align: center;
-      font-size: 12px;
-      color: #777;
-      margin-bottom: 40px;
-    }
-  </style>
+        .nav-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 8px 0;
+        }
+
+        .nav-links a::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #ffffff;
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #ffffff;
+        }
+
+        .nav-links a:hover::before {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+        }
+
+        .hero-content {
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 100;
+            margin-bottom: 24px;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.2s forwards;
+            letter-spacing: -4px;
+        }
+
+        .hero .subtitle {
+            font-size: clamp(1rem, 2vw, 1.4rem);
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 48px;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.4s forwards;
+            font-weight: 300;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 16px 48px;
+            background: transparent;
+            border: 2px solid #ffffff;
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.6s forwards;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: #ffffff;
+            transition: left 0.4s ease;
+            z-index: -1;
+        }
+
+        .cta-button:hover::before {
+            left: 0;
+        }
+
+        .cta-button:hover {
+            color: #0a0a0a;
+            transform: translateY(-2px);
+        }
+
+        /* Geometric Background */
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 300px;
+            height: 300px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transform: translate(-50%, -50%) rotate(45deg);
+            animation: rotate 20s linear infinite;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 200px;
+            height: 200px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transform: translate(-50%, -50%) rotate(-45deg);
+            animation: rotate 15s linear infinite reverse;
+        }
+
+        /* Upload Section */
+        .upload-section {
+            padding: 120px 0;
+            background: #111111;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 100;
+            margin-bottom: 80px;
+            letter-spacing: -2px;
+        }
+
+        .upload-area {
+            max-width: 600px;
+            margin: 0 auto;
+            border: 2px dashed rgba(255, 255, 255, 0.2);
+            padding: 80px 40px;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .upload-area::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.02), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .upload-area:hover::before {
+            left: 100%;
+        }
+
+        .upload-area:hover {
+            border-color: rgba(255, 255, 255, 0.4);
+            transform: translateY(-4px);
+        }
+
+        .upload-area.drag-over {
+            border-color: #ffffff;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .upload-icon {
+            font-size: 48px;
+            margin-bottom: 24px;
+            opacity: 0.6;
+        }
+
+        .upload-text {
+            font-size: 18px;
+            margin-bottom: 16px;
+            font-weight: 300;
+        }
+
+        .upload-subtext {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 14px;
+            margin-bottom: 32px;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .upload-btn {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 12px 32px;
+            color: #ffffff;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .upload-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            transition: left 0.3s ease;
+        }
+
+        .upload-btn:hover::before {
+            left: 0;
+        }
+
+        .upload-btn:hover {
+            border-color: #ffffff;
+        }
+
+        /* Product Form */
+        .product-form {
+            max-width: 800px;
+            margin: 80px auto 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .product-form.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 16px 0;
+            color: #ffffff;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-bottom-color: #ffffff;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .submit-btn {
+            grid-column: 1 / -1;
+            justify-self: center;
+            margin-top: 40px;
+            background: transparent;
+            border: 2px solid #ffffff;
+            padding: 16px 64px;
+            color: #ffffff;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: #ffffff;
+            transition: left 0.4s ease;
+            z-index: -1;
+        }
+
+        .submit-btn:hover::before {
+            left: 0;
+        }
+
+        .submit-btn:hover {
+            color: #0a0a0a;
+        }
+
+        /* Products Section */
+        .products-section {
+            padding: 120px 0;
+            background: #0a0a0a;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+
+        .product-card {
+            background: #111111;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        .product-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .product-card:hover::before {
+            transform: translateX(100%);
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .product-card:hover .product-image {
+            transform: scale(1.05);
+        }
+
+        .product-info {
+            padding: 32px;
+        }
+
+        .product-name {
+            font-size: 20px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .product-price {
+            font-size: 24px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 16px;
+        }
+
+        .product-description {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* Preview Image */
+        .preview-image {
+            max-width: 100%;
+            max-height: 200px;
+            object-fit: cover;
+            margin-top: 24px;
+            opacity: 0;
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        /* Notifications */
+        .notification {
+            position: fixed;
+            top: 100px;
+            right: 24px;
+            padding: 16px 24px;
+            background: #111111;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            z-index: 10000;
+            transform: translateX(400px);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: 500;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.success {
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .notification.error {
+            border-color: rgba(255, 100, 100, 0.5);
+        }
+
+        /* Loading */
+        .loading {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            border-top-color: #ffffff;
+            animation: spin 1s linear infinite;
+            margin-right: 8px;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes rotate {
+            from {
+                transform: translate(-50%, -50%) rotate(45deg);
+            }
+            to {
+                transform: translate(-50%, -50%) rotate(405deg);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.3;
+            }
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero {
+                padding: 0 20px;
+            }
+            
+            .upload-area {
+                padding: 60px 20px;
+            }
+            
+            .product-form {
+                grid-template-columns: 1fr;
+            }
+            
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
+    <header class="header">
+        <nav class="nav">
+            <div class="logo">AYKTROS</div>
+            <ul class="nav-links">
+                <li><a href="#home">Главная</a></li>
+                <li><a href="#products">Товары</a></li>
+                <li><a href="#upload">Добавить</a></li>
+                <li><a href="#contact">Контакты</a></li>
+            </ul>
+        </nav>
+    </header>
 
-  <header>Blessed Mortal</header>
+    <main>
+        <section class="hero" id="home">
+            <div class="hero-content">
+                <h1>AYKTROS</h1>
+                <p class="subtitle">Минималистичная элегантность в каждом товаре</p>
+                <a href="#upload" class="cta-button">Добавить товар</a>
+            </div>
+        </section>
 
-  <div class="product-grid">
-    <div class="product" onclick="toggleDescription(this)">
-      <img src="https://via.placeholder.com/400x500?text=Hoodie+001" alt="Hoodie 001">
-      <div class="description">
-        <p>Oversized чёрный худи с вышивкой "Blessed Mortal" на спине. Удобный, тёплый и стильный.</p>
-        <a class="buy-btn" href="https://t.me/your_username" target="_blank">Купить</a>
-      </div>
-    </div>
+        <section class="upload-section" id="upload">
+            <div class="container">
+                <h2 class="section-title">Добавить товар</h2>
+                
+                <div class="upload-area" id="uploadArea">
+                    <div class="upload-icon">📎</div>
+                    <div class="upload-text">Перетащите изображение или нажмите для выбора</div>
+                    <div class="upload-subtext">JPG, PNG, GIF • Максимум 5MB</div>
+                    <input type="file" class="file-input" id="fileInput" accept="image/*">
+                    <button class="upload-btn" onclick="document.getElementById('fileInput').click()">
+                        Выбрать файл
+                    </button>
+                    <div id="preview"></div>
+                </div>
 
-    <div class="product" onclick="toggleDescription(this)">
-      <img src="https://via.placeholder.com/400x500?text=Tee+White+002" alt="Tee 002">
-      <div class="description">
-        <p>Белая футболка с минималистичным логотипом. 100% хлопок, мягкая ткань.</p>
-        <a class="buy-btn" href="https://t.me/your_username" target="_blank">Купить</a>
-      </div>
-    </div>
-  </div>
+                <form class="product-form" id="productForm">
+                    <div class="form-group">
+                        <label for="productName">Название</label>
+                        <input type="text" id="productName" placeholder="Введите название товара" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="productPrice">Цена</label>
+                        <input type="number" id="productPrice" placeholder="0.00" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="productCategory">Категория</label>
+                        <input type="text" id="productCategory" placeholder="Электроника, Одежда...">
+                    </div>
+                    <div class="form-group">
+                        <label for="productBrand">Бренд</label>
+                        <input type="text" id="productBrand" placeholder="Название бренда">
+                    </div>
+                    <div class="form-group" style="grid-column: 1 / -1;">
+                        <label for="productDescription">Описание</label>
+                        <textarea id="productDescription" placeholder="Подробное описание товара"></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">
+                        Добавить товар
+                    </button>
+                </form>
+            </div>
+        </section>
 
-  <footer>&copy; 2025 Blessed Mortal. All rights reserved.</footer>
+        <section class="products-section" id="products">
+            <div class="container">
+                <h2 class="section-title">Каталог</h2>
+                <div class="products-grid" id="productsGrid">
+                    <!-- Товары добавляются динамически -->
+                </div>
+            </div>
+        </section>
+    </main>
 
-  <script>
-    function toggleDescription(product) {
-      const desc = product.querySelector('.description');
-      desc.style.display = desc.style.display === 'block' ? 'none' : 'block';
-    }
-  </script>
+    <script>
+        // Глобальные переменные
+        let products = [];
+        let currentImageFile = null;
 
+        // Инициализация при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeUpload();
+            initializeForm();
+            initializeScrollAnimations();
+            loadSampleProducts();
+        });
+
+        // Инициализация загрузки файлов
+        function initializeUpload() {
+            const uploadArea = document.getElementById('uploadArea');
+            const fileInput = document.getElementById('fileInput');
+
+            // Drag & Drop события
+            uploadArea.addEventListener('dragover', handleDragOver);
+            uploadArea.addEventListener('dragleave', handleDragLeave);
+            uploadArea.addEventListener('drop', handleDrop);
+
+            // Клик по области загрузки
+            uploadArea.addEventListener('click', (e) => {
+                if (e.target === uploadArea || e.target.closest('.upload-area')) {
+                    fileInput.click();
+                }
+            });
+
+            // Выбор файла через input
+            fileInput.addEventListener('change', (e) => {
+                if (e.target.files.length > 0) {
+                    handleFile(e.target.files[0]);
+                }
+            });
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault();
+            e.currentTarget.classList.add('drag-over');
+        }
+
+        function handleDragLeave(e) {
+            e.preventDefault();
+            e.currentTarget.classList.remove('drag-over');
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            e.currentTarget.classList.remove('drag-over');
+            
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleFile(files[0]);
+            }
+        }
+
+        // Обработка выбранного файла
+        function handleFile(file) {
+            if (!file.type.startsWith('image/')) {
+                showNotification('Пожалуйста, выберите изображение', 'error');
+                return;
+            }
+
+            if (file.size > 5 * 1024 * 1024) {
+                showNotification('Размер файла не должен превышать 5MB', 'error');
+                return;
+            }
+
+            currentImageFile = file;
+            
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                showImagePreview(e.target.result);
+                showProductForm();
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Показ превью изображения
+        function showImagePreview(src) {
+            const preview = document.getElementById('preview');
+            preview.innerHTML = `<img src="${src}" alt="Preview" class="preview-image">`;
+        }
+
+        // Показ формы товара
+        function showProductForm() {
+            const form = document.getElementById('productForm');
+            form.classList.add('show');
+        }
+
+        // Инициализация формы
+        function initializeForm() {
+            const form = document.getElementById('productForm');
+            form.addEventListener('submit', handleFormSubmit);
+        }
+
+        // Обработка отправки формы
+        async function handleFormSubmit(e) {
+            e.preventDefault();
+            
+            if (!currentImageFile) {
+                showNotification('Пожалуйста, выберите изображение товара', 'error');
+                return;
+            }
+
+            const submitBtn = e.target.querySelector('.submit-btn');
+            const originalText = submitBtn.textContent;
+            submitBtn.innerHTML = '<span class="loading"></span>Добавляем...';
+            submitBtn.disabled = true;
+
+            const product = {
+                id: Date.now(),
+                name: document.getElementById('productName').value,
+                price: parseFloat(document.getElementById('productPrice').value),
+                category: document.getElementById('productCategory').value,
+                brand: document.getElementById('productBrand').value,
+                description: document.getElementById('productDescription').value,
+                image: URL.createObjectURL(currentImageFile)
+            };
+
+            // Симуляция задержки загрузки
+            await new Promise(resolve => setTimeout(resolve, 1500));
+
+            addProduct(product);
+            resetForm();
+            showNotification('Товар успешно добавлен', 'success');
+
+            submitBtn.textContent = originalText;
+            submitBtn.disabled = false;
+        }
+
+        // Добавление товара в каталог
+        function addProduct(product) {
+            products.push(product);
+            renderProducts();
+        }
+
+        // Отображение товаров
+        function renderProducts() {
+            const grid = document.getElementById('productsGrid');
+            grid.innerHTML = products.map((product, index) => `
+                <div class="product-card" style="animation-delay: ${index * 0.1}s">
+                    <img src="${product.image}" alt="${product.name}" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-name">${product.name}</h3>
+                        <div class="product-price">${product.price.toFixed(2)} ₽</div>
+                        <p class="product-description">${product.description || 'Без описания'}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Сброс формы
+        function resetForm() {
+            document.getElementById('productForm').reset();
+            document.getElementById('productForm').classList.remove('show');
+            document.getElementById('preview').innerHTML = '';
+            currentImageFile = null;
+        }
+
+        // Показ уведомлений
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+
+            setTimeout(() => notification.classList.add('show'), 100);
+
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => notification.remove(), 400);
+            }, 3000);
+        }
+
+        // Инициализация анимаций при скролле
+        function initializeScrollAnimations() {
+            // Плавная прокрутка для навигации
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+
+            // Эффекты при скролле
+            window.addEventListener('scroll', () => {
+                const scrolled = window.pageYOffset;
+                const header = document.querySelector('.header');
+                
+                if (scrolled > 50) {
+                    header.style.background = 'rgba(10, 10, 10, 0.95)';
+                } else {
+                    header.style.background = 'rgba(10, 10, 10, 0.8)';
+                }
+            });
+        }
+
+        // Загрузка примеров товаров
+        function loadSampleProducts() {
+            const sampleProducts = [
+                {
+                    id: 1,
+                    name: "Минималистичные наушники",
+                    price: 15999,
+                    category: "Аудио",
+                    brand: "AYKTROS",
+                    description: "Беспроводные наушники с чистым звуком и элегантным дизайном",
+                    image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='250' viewBox='0 0 300 250'%3E%3Crect width='300' height='250' fill='%23111111'/%3E%3Ccircle cx='150' cy='125' r='40' fill='none' stroke='%23ffffff' stroke-width='1'/%3E%3Ccircle cx='150' cy='125' r='15' fill='%23ffffff'/%3E%3Ctext x='150' y='200' font-family='Arial' font-size='12' fill='%23666' text-anchor='middle'%3EAYKTROS Audio%3C/text%3E%3C/svg%3E"
+                },
+                {
+                    id: 2,
+                    name: "Черная футболка Premium",
+                    price: 2999,
+                    category: "Одежда",
+                    brand: "AYKTROS",
+                    description: "100% органический хлопок, минималистичный дизайн",
+                    image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='250' viewBox='0 0 300 250'%3E%3Crect width='300' height='250' fill='%23111111'/%3E%3Crect x='100' y='70' width='100' height='120' fill='none' stroke='%23ffffff' stroke-width='1'/%3E%3Cpath d='M100,90 Q90,80 80,90 Q90,100 100,90' fill='none' stroke='%23ffffff' stroke-width='1'/%3E%3Cpath d='M200,90 Q210,80 220,90 Q210,100 200,90' fill='none' stroke='%23ffffff' stroke-width='1'/%3E%3Ctext x='150' y='220' font-family='Arial' font-size='12' fill='%23666' text-anchor='middle'%3EAYKTROS Wear%3C/text%3E%3C/svg%3E"
+                }
+            ];
+
+            products = sampleProducts;
+            renderProducts();
+        }
+    </script>
 </body>
 </html>
