@@ -1,27 +1,105 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <title>Мой магазин</title>
+  <meta charset="UTF-8">
+  <title>Blessed Mortal</title>
   <style>
-    body { font-family: sans-serif; padding: 20px; }
-    .product { border: 1px solid #ccc; padding: 15px; margin: 10px 0; }
-    .btn { background: #0088cc; color: white; padding: 10px 15px; text-decoration: none; }
+    body {
+      font-family: 'Helvetica Neue', sans-serif;
+      background-color: #fff;
+      color: #111;
+      margin: 0;
+      padding: 0 20px;
+    }
+
+    header {
+      text-align: center;
+      padding: 40px 0;
+      font-size: 32px;
+      letter-spacing: 2px;
+      font-weight: bold;
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+      max-width: 1000px;
+      margin: 0 auto 60px;
+    }
+
+    .product {
+      cursor: pointer;
+      border: 1px solid #eee;
+      padding: 15px;
+      transition: all 0.2s ease;
+    }
+
+    .product:hover {
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    .product img {
+      width: 100%;
+      height: auto;
+    }
+
+    .description {
+      display: none;
+      margin-top: 15px;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .buy-btn {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 10px 20px;
+      background: #000;
+      color: #fff;
+      text-decoration: none;
+      font-size: 14px;
+      border-radius: 4px;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 12px;
+      color: #777;
+      margin-bottom: 40px;
+    }
   </style>
 </head>
 <body>
-  <h1>Добро пожаловать в мой магазин</h1>
 
-  <div class="product">
-    <h2>Товар 1</h2>
-    <p>Описание товара 1: коротко о пользе или характеристиках.</p>
-    <a class="btn" href="https://t.me/your_username" target="_blank">Купить</a>
+  <header>Blessed Mortal</header>
+
+  <div class="product-grid">
+    <div class="product" onclick="toggleDescription(this)">
+      <img src="https://via.placeholder.com/400x500?text=Hoodie+001" alt="Hoodie 001">
+      <div class="description">
+        <p>Oversized чёрный худи с вышивкой "Blessed Mortal" на спине. Удобный, тёплый и стильный.</p>
+        <a class="buy-btn" href="https://t.me/your_username" target="_blank">Купить</a>
+      </div>
+    </div>
+
+    <div class="product" onclick="toggleDescription(this)">
+      <img src="https://via.placeholder.com/400x500?text=Tee+White+002" alt="Tee 002">
+      <div class="description">
+        <p>Белая футболка с минималистичным логотипом. 100% хлопок, мягкая ткань.</p>
+        <a class="buy-btn" href="https://t.me/your_username" target="_blank">Купить</a>
+      </div>
+    </div>
   </div>
 
-  <div class="product">
-    <h2>Товар 2</h2>
-    <p>Описание товара 2: коротко о преимуществах.</p>
-    <a class="btn" href="https://t.me/your_group_link" target="_blank">Купить</a>
-  </div>
+  <footer>&copy; 2025 Blessed Mortal. All rights reserved.</footer>
+
+  <script>
+    function toggleDescription(product) {
+      const desc = product.querySelector('.description');
+      desc.style.display = desc.style.display === 'block' ? 'none' : 'block';
+    }
+  </script>
+
 </body>
 </html>
