@@ -151,12 +151,12 @@
                             <div class="ownership-transfer" id="ownershipTransfer" style="display: none;">
                                 <div class="transfer-title">Transfer Ownership</div>
                                 <div class="transfer-instructions">
-                                    <p>To change the owner name to a new one, contact us on Telegram with video proof:</p>
+                                    <p>To change the owner name, contact us on Telegram with video proof and your full name:</p>
                                     <ul style="margin: 15px 0; padding-left: 20px;">
-                                        <li>Show the clothing item clearly in the video</li>
+                                        <li>Record a video showing the clothing item clearly</li>
                                         <li>Display the unique code tag on the clothing</li>
-                                        <li>Include your full name (first and last name) in the video</li>
-                                        <li>Ensure both the clothing and code are clearly visible</li>
+                                        <li>Send the video along with your first and last name to our Telegram</li>
+                                        <li>Ensure both the clothing and code are clearly visible in the video</li>
                                     </ul>
                                 </div>
                                 <button class="button-style" onclick="transferOwnership()">Change Owner</button>
@@ -193,87 +193,55 @@
 
     <script>
         // ===============================================
-        // AUTHENTICITY DATABASE - EDIT HERE
+        // AUTHENTICITY DATABASE - ADD NEW CODES HERE
         // ===============================================
-        const authenticityDatabase = {
-            'A8DHB4V3K8': {
-                owner: 'David Bolnik',
-                purchaseDate: '2025-07-24',
-                purchaseTime: '14:32',
-                itemName: 'AYKTROS HOODIE',
-                previousOwners: ['', '', '', '',] // Add names here, empty strings will not be displayed
-            },
-            'B3Q8L6N1R4': {
-                owner: 'Marcus Johnson',
-                purchaseDate: '2024-02-28',
-                purchaseTime: '09:15',
-                itemName: 'Designer Jeans',
-                previousOwners: ['', '', ''] // First two owners filled, third empty
-            },
-            'C9F2V7T3H6': {
-                owner: 'Elena Rodriguez',
-                purchaseDate: '2024-04-10',
-                purchaseTime: '16:42',
-                itemName: 'Vintage T-Shirt',
-                previousOwners: ['', '', ''] // Only one previous owner
-            },
-            'D5K8M4P9X2': {
-                owner: 'James Anderson',
-                purchaseDate: '2024-01-22',
-                purchaseTime: '11:28',
-                itemName: 'Leather Jacket',
-                previousOwners: ['', '', ''] // No previous owners
-            },
-            'E1R7Y5Q3W8': {
-                owner: 'Sofia Chen',
-                purchaseDate: '2024-05-03',
-                purchaseTime: '13:55',
-                itemName: 'Oversized Sweater',
-                previousOwners: ['', 'n', ''] // All three slots filled
-            },
-            'F4H9L2V6B3': {
-                owner: 'Alexander Smith',
-                purchaseDate: '2024-03-08',
-                purchaseTime: '08:17',
-                itemName: 'Cargo Pants',
-                previousOwners: ['', '', '']
-            },
-            'G8N1K5T7R9': {
-                owner: 'Isabella Wilson',
-                purchaseDate: '2024-04-25',
-                purchaseTime: '15:23',
-                itemName: 'Graphic Tee',
-                previousOwners: ['', '', '']
-            },
-            'H2Q6M3F8L4': {
-                owner: 'Michael Brown',
-                purchaseDate: '2024-02-14',
-                purchaseTime: '12:44',
-                itemName: 'Denim Jacket',
-                previousOwners: ['', '', '']
-            },
-            'J7P9X1V5K8': {
-                owner: 'Emma Taylor',
-                purchaseDate: '2024-05-18',
-                purchaseTime: '10:31',
-                itemName: 'Track Suit',
-                previousOwners: ['', '', '']
-            },
-            'K3T2N6R4Q9': {
-                owner: 'Daniel Martinez',
-                purchaseDate: '2024-01-30',
-                purchaseTime: '17:08',
-                itemName: 'Bomber Jacket',
-                previousOwners: ['', '', '']
-            }
-            'XOXOXOXOXO': {
-                owner: 'Daniel Mitrushev',
-                purchaseDate: '2024-01-30',
-                purchaseTime: '17:02',
-                itemName: 'Jeans',
-                previousOwners: ['', '', '']
-            }
-        };
+        
+        // Function to create a new authentication code entry
+        function createAuthCode(code, owner, itemName, purchaseDate = null, purchaseTime = null, previousOwners = ['', '', '']) {
+            return {
+                code: code,
+                owner: owner,
+                purchaseDate: purchaseDate || new Date().toISOString().split('T')[0], // Today's date if not specified
+                purchaseTime: purchaseTime || new Date().toLocaleTimeString('en-GB', {hour: '2-digit', minute: '2-digit'}), // Current time if not specified
+                itemName: itemName,
+                previousOwners: previousOwners // Array of up to 3 previous owners, use empty strings for unused slots
+            };
+        }
+
+        // AUTHENTICATION DATABASE
+        // To add a new code, use: addAuthCode('YOUR_CODE', 'Owner Name', 'Item Name', 'YYYY-MM-DD', 'HH:MM', ['prev1', 'prev2', 'prev3'])
+        // Date and time are optional - will use current date/time if not provided
+        // Previous owners array is optional - will use empty array if not provided
+        
+        const authenticityDatabase = {};
+
+        // Add authentication codes here using the helper function:
+        function addAuthCode(code, owner, itemName, purchaseDate = null, purchaseTime = null, previousOwners = ['', '', '']) {
+            authenticityDatabase[code] = createAuthCode(code, owner, itemName, purchaseDate, purchaseTime, previousOwners);
+        }
+
+        // EXAMPLE CODES - Replace or modify these with your actual codes:
+        addAuthCode('A8DHB4V3K8', 'David Bolnik', 'AYKTROS HOODIE', '2025-07-24', '14:32', ['', '', '']);
+        addAuthCode('B3Q8L6N1R4', 'Marcus Johnson', 'Designer Jeans', '2024-02-28', '09:15', ['', '', '']);
+        addAuthCode('C9F2V7T3H6', 'Elena Rodriguez', 'Vintage T-Shirt', '2024-04-10', '16:42', ['', '', '']);
+        addAuthCode('D5K8M4P9X2', 'James Anderson', 'Leather Jacket', '2024-01-22', '11:28', ['', '', '']);
+        addAuthCode('E1R7Y5Q3W8', 'Sofia Chen', 'Oversized Sweater', '2024-05-03', '13:55', ['', '', '']);
+        addAuthCode('F4H9L2V6B3', 'Alexander Smith', 'Cargo Pants', '2024-03-08', '08:17', ['', '', '']);
+        addAuthCode('G8N1K5T7R9', 'Isabella Wilson', 'Graphic Tee', '2024-04-25', '15:23', ['', '', '']);
+        addAuthCode('H2Q6M3F8L4', 'Michael Brown', 'Denim Jacket', '2024-02-14', '12:44', ['', '', '']);
+        addAuthCode('J7P9X1V5K8', 'Emma Taylor', 'Track Suit', '2024-05-18', '10:31', ['', '', '']);
+        addAuthCode('K3T2N6R4Q9', 'Daniel Martinez', 'Bomber Jacket', '2024-01-30', '17:08', ['', '', '']);
+        addAuthCode('XOXOXOXOXO', 'Daniel Mitrushev', 'Jeans', '2024-01-30', '17:02', ['', '', '']);
+
+        // ===============================================
+        // TO ADD A NEW CODE, SIMPLY USE:
+        // addAuthCode('NEW_CODE_10', 'Customer Name', 'Product Name');
+        // 
+        // WITH CUSTOM DATE/TIME:
+        // addAuthCode('NEW_CODE_10', 'Customer Name', 'Product Name', '2024-12-25', '15:30');
+        //
+        // WITH PREVIOUS OWNERS:
+        // addAuthCode('NEW_CODE_10', 'Customer Name', 'Product Name', '2024-12-25', '15:30', ['Previous Owner 1', 'Previous Owner 2', '']);
         // ===============================================
 
         const products = [{
