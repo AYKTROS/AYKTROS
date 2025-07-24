@@ -40,7 +40,7 @@
 
         .nav {
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
             padding: 20px 24px;
             max-width: 1200px;
@@ -64,6 +64,156 @@
             height: 2px;
             background: linear-gradient(90deg, #ffffff, transparent);
             animation: pulse 2s ease-in-out infinite;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .nav-link {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            cursor: pointer;
+        }
+
+        .nav-link:hover {
+            color: #ffffff;
+        }
+
+        /* Verification Section */
+        .verification-section {
+            padding: 120px 0 60px;
+            background: #0a0a0a;
+            display: none;
+        }
+
+        .verification-section.active {
+            display: block;
+        }
+
+        .verification-container {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .verification-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 100;
+            margin-bottom: 40px;
+            letter-spacing: -2px;
+        }
+
+        .verification-form {
+            background: #111111;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            margin-bottom: 40px;
+            transition: all 0.3s ease;
+        }
+
+        .code-input {
+            width: 100%;
+            padding: 20px;
+            background: transparent;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            font-size: 18px;
+            text-align: center;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .code-input:focus {
+            outline: none;
+            border-color: #ffffff;
+        }
+
+        .code-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+            letter-spacing: 1px;
+            text-transform: none;
+        }
+
+        .verify-button {
+            background: transparent;
+            border: 2px solid #ffffff;
+            padding: 16px 48px;
+            color: #ffffff;
+            font-weight: 500;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .verify-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: #ffffff;
+            transition: left 0.4s ease;
+            z-index: -1;
+        }
+
+        .verify-button:hover::before {
+            left: 0;
+        }
+
+        .verify-button:hover {
+            color: #0a0a0a;
+        }
+
+        .verification-result {
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 500;
+            display: none;
+        }
+
+        .result-original {
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            color: #22c55e;
+        }
+
+        .result-fake {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #ef4444;
+        }
+
+        .owner-info {
+            margin-top: 15px;
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+        }
+
+        .owner-info div {
+            margin-bottom: 8px;
+        }
+
+        .info-label {
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 400;
+        }
+
+        .info-value {
+            color: #ffffff;
+            font-weight: 500;
         }
 
         /* Hero Section */
@@ -401,18 +551,6 @@
             color: #fff;
         }
 
-        /* Update Link Notice */
-        .update-notice {
-            background: rgba(255, 193, 7, 0.1);
-            border: 1px solid rgba(255, 193, 7, 0.3);
-            color: #ffc107;
-            padding: 15px;
-            margin: 20px;
-            border-radius: 4px;
-            text-align: center;
-            font-size: 14px;
-        }
-
         /* Animations */
         @keyframes fadeInUp {
             from {
@@ -455,6 +593,16 @@
         }
 
         @media (max-width: 768px) {
+            .nav {
+                flex-direction: column;
+                gap: 20px;
+                padding: 15px 20px;
+            }
+
+            .nav-links {
+                gap: 20px;
+            }
+
             .hero {
                 padding: 0 20px;
             }
@@ -498,15 +646,23 @@
             .modal-title {
                 font-size: 24px;
             }
+
+            .verification-form {
+                padding: 30px 20px;
+            }
         }
     </style>
 </head>
 <body>
 
-
     <header class="header">
         <nav class="nav">
             <div class="logo">AYKTROS</div>
+            <div class="nav-links">
+                <a href="#home" class="nav-link" onclick="showSection('home')">Home</a>
+                <a href="#verification" class="nav-link" onclick="showSection('verification')">Verify Original</a>
+                <a href="#products" class="nav-link" onclick="showSection('products')">Products</a>
+            </div>
         </nav>
     </header>
 
@@ -515,7 +671,34 @@
             <div class="hero-content">
                 <h1>AYKTROS</h1>
                 <p class="subtitle">clothes that bring pleasure</p>
-                <a href="#products" class="cta-button">look at clothes</a>
+                <a href="#products" class="cta-button" onclick="showSection('products')">look at clothes</a>
+            </div>
+        </section>
+
+        <section class="verification-section" id="verification">
+            <div class="container">
+                <div class="verification-container">
+                    <h2 class="verification-title">Verify Authenticity</h2>
+                    <p style="color: rgba(255, 255, 255, 0.7); margin-bottom: 40px; font-size: 16px;">
+                        Enter your 10-character authenticity code to verify your AYKTROS product
+                    </p>
+                    
+                    <div class="verification-form">
+                        <input 
+                            type="text" 
+                            class="code-input" 
+                            id="authCode" 
+                            placeholder="Enter authenticity code"
+                            maxlength="10"
+                        >
+                        <button class="verify-button" onclick="verifyCode()">Verify Code</button>
+                        
+                        <div class="verification-result" id="verificationResult">
+                            <div id="resultText"></div>
+                            <div class="owner-info" id="ownerInfo"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -548,16 +731,71 @@
     </div>
 
     <script>
-        // IMPORTANT: Replace this link with direct image link
-        // Current link leads to album, not image
+        // ===============================================
+        // AUTHENTICITY DATABASE - EDIT HERE
+        // ===============================================
+        const authenticityDatabase = {
+            'XXXXXXXXXX': {
+                owner: 'David Bolnik',
+                purchaseDate: '2025-07-24 Time: 18:55',
+                itemName: 'AYKTROS HOODIE'
+            },
+            'B3Q8L6N1R4': {
+                owner: 'Marcus Johnson',
+                purchaseDate: '2024-02-28',
+                itemName: 'Designer Jeans'
+            },
+            'C9F2V7T3H6': {
+                owner: 'Elena Rodriguez',
+                purchaseDate: '2024-04-10',
+                itemName: 'Vintage T-Shirt'
+            },
+            'D5K8M4P9X2': {
+                owner: 'James Anderson',
+                purchaseDate: '2024-01-22',
+                itemName: 'Leather Jacket'
+            },
+            'E1R7Y5Q3W8': {
+                owner: 'Sofia Chen',
+                purchaseDate: '2024-05-03',
+                itemName: 'Oversized Sweater'
+            },
+            'F4H9L2V6B3': {
+                owner: 'Alexander Smith',
+                purchaseDate: '2024-03-08',
+                itemName: 'Cargo Pants'
+            },
+            'G8N1K5T7R9': {
+                owner: 'Isabella Wilson',
+                purchaseDate: '2024-04-25',
+                itemName: 'Graphic Tee'
+            },
+            'H2Q6M3F8L4': {
+                owner: 'Michael Brown',
+                purchaseDate: '2024-02-14',
+                itemName: 'Denim Jacket'
+            },
+            'J7P9X1V5K8': {
+                owner: 'Emma Taylor',
+                purchaseDate: '2024-05-18',
+                itemName: 'Track Suit'
+            },
+            'K3T2N6R4Q9': {
+                owner: 'Daniel Martinez',
+                purchaseDate: '2024-01-30',
+                itemName: 'Bomber Jacket'
+            }
+        };
+        // ===============================================
+
+        // Products data
         const products = [
             {
                 id: 1,
                 name: "Chrome Hearts Hoodie",
                 price: "30 €",
                 description: "Experience the underground luxury of Chrome Hearts with this exclusive hoodie. Crafted from premium heavyweight cotton with a distressed finish that tells its own story. The iconic gothic cross embroidery and sterling silver hardware details create an unmistakable streetwear statement. Each piece carries the rebellious spirit of Los Angeles, where rock'n'roll meets high fashion. This isn't just clothing – it's wearable art for those who dare to stand out from the crowd.",
-                // REPLACE WITH DIRECT LINK LIKE: "https://i.imgur.com/XXXXXX.jpg"
-                imageUrl: "https://i.imgur.com/8x4zAkS.jpeg" // Temporary replacement
+                imageUrl: "https://i.imgur.com/8x4zAkS.jpeg"
             }
         ];
 
@@ -566,6 +804,92 @@
             renderProducts();
             initializeModal();
             initializeScrollAnimations();
+            showSection('home');
+        });
+
+        // Show specific section
+        function showSection(sectionName) {
+            // Hide all sections
+            document.querySelector('.hero').style.display = 'none';
+            document.querySelector('.verification-section').classList.remove('active');
+            document.querySelector('.products-section').style.display = 'none';
+
+            // Show requested section
+            switch(sectionName) {
+                case 'home':
+                    document.querySelector('.hero').style.display = 'flex';
+                    break;
+                case 'verification':
+                    document.querySelector('.verification-section').classList.add('active');
+                    break;
+                case 'products':
+                    document.querySelector('.products-section').style.display = 'block';
+                    break;
+            }
+
+            // Close modal if open
+            closeModal();
+        }
+
+        // Verify authenticity code
+        function verifyCode() {
+            const codeInput = document.getElementById('authCode');
+            const resultDiv = document.getElementById('verificationResult');
+            const resultText = document.getElementById('resultText');
+            const ownerInfo = document.getElementById('ownerInfo');
+            
+            const enteredCode = codeInput.value.trim().toUpperCase();
+            
+            if (enteredCode.length !== 10) {
+                resultDiv.className = 'verification-result result-fake';
+                resultDiv.style.display = 'block';
+                resultText.textContent = 'Invalid code format. Code must be 10 characters.';
+                ownerInfo.innerHTML = '';
+                return;
+            }
+
+            if (authenticityDatabase[enteredCode]) {
+                // Code is valid
+                const item = authenticityDatabase[enteredCode];
+                resultDiv.className = 'verification-result result-original';
+                resultDiv.style.display = 'block';
+                resultText.textContent = '✓ ORIGINAL';
+                
+                // Format purchase date
+                const purchaseDate = new Date(item.purchaseDate);
+                const formattedDate = purchaseDate.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+                
+                ownerInfo.innerHTML = `
+                    <div><span class="info-label">Owner:</span> <span class="info-value">${item.owner}</span></div>
+                    <div><span class="info-label">Item:</span> <span class="info-value">${item.itemName}</span></div>
+                    <div><span class="info-label">Purchase Date:</span> <span class="info-value">${formattedDate}</span></div>
+                `;
+            } else {
+                // Code is invalid
+                resultDiv.className = 'verification-result result-fake';
+                resultDiv.style.display = 'block';
+                resultText.textContent = '✗ FAKE OR INVALID CODE';
+                ownerInfo.innerHTML = '<div class="info-value">This code is not registered in our database.</div>';
+            }
+
+            // Clear input after verification
+            setTimeout(() => {
+                codeInput.value = '';
+            }, 100);
+        }
+
+        // Allow Enter key to verify
+        document.addEventListener('DOMContentLoaded', function() {
+            const codeInput = document.getElementById('authCode');
+            codeInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    verifyCode();
+                }
+            });
         });
 
         // Display products
@@ -660,17 +984,12 @@
 
         // Initialize scroll animations
         function initializeScrollAnimations() {
-            // Smooth scrolling
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function (e) {
+            // Smooth scrolling for nav links
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', function(e) {
                     e.preventDefault();
-                    const target = document.querySelector(this.getAttribute('href'));
-                    if (target) {
-                        target.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'start'
-                        });
-                    }
+                    const section = this.getAttribute('href').substring(1);
+                    showSection(section);
                 });
             });
 
